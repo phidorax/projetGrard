@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">projetGrard</string>
+    <string name="app_title">Qcm</string>
+    <string name="validate">Valider</string>
+    <string name="stop">Stopper</string>
+    <string name="scores_title">Scores</string>
+    <string name="note_average_title">Note moyenne</string>
+    <string name="note_quiz_title">Note questionnaire $1</string>
+    <string name="see_scores_title">Voir vos scores</string>
+    <string name="reset_scores_title">Réinitialiser les scores</string>
+    <string name="create_quiz_title">Créer des questionnaires</string>
+    <string name="quit_app_title">Quitter l’application</string>
+    <string name="select_quiz_title">Sélectionnez le questionnaire que vous souhaitez lancer</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Annuler</string>
+    <string name="password_incorrect">Mot de passe incorrect</string>
+    <string name="title_password_admin">Mot de passe admin</string>
+    <string name="msg_password_admin">Veuillez entrer le mot de passe admin</string>
+    <!--  Chaînes servant uniquement à afficher un aperçu dans l'éditeur de layout  -->
+    <string name="example_progress_text">Question 1/10</string>
+    <string name="example_category_text">Préhistoire</string>
+    <string name="example_question_text">Les dinosaures ont disparu il y a…</string>
+    <string name="example_answer1">20 millions d\'années</string>
+    <string name="example_answer2">65 millions d\'années</string>
+    <string name="example_answer3">105 millions d\'années</string>
+    <string name="example_average_note">12/20</string>
+</resources>

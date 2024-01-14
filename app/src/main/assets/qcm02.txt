@@ -1,0 +1,34 @@
+Informatique
+
+La partie de l'ordinateur qui réalise la multiplication est
+
+    l'unité centrale
+    l'unité arithmétique et logique x
+    le multiplexeur
+
+
+Un co-processeur est
+
+    un périphérique
+    une unité d'échange
+    un « supplément » à l'unité arithmétique et logique x
+
+Dans un ordinateur, les instructions sont stockées
+
+    sur le disque dur
+    en mémoire centrale à côté des variables x
+    dans une unité d'échange
+
+Assembler le code de l'utilisateur et les bibliothèques fournies par le constructeur est précisément le rôle
+
+    de l'assembleur
+    du compilateur
+    de l'éditeur de liens x
+
+Chasser l'intrus parmi les langages de programmation suivants
+
+    PL1
+    Linux x
+    Fortran
+   
+
