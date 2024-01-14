@@ -21,7 +21,7 @@
         app:titleTextColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/scoreTitle"
+        android:id="@+id/themeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -35,21 +35,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:text="@string/example_progress_text"
+        android:text="@string/progress_text"
         app:layout_constraintBottom_toTopOf="@+id/questionView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/questionView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
 
+        android:layout_marginEnd="16dp"
         android:text="@string/example_question_text"
         app:layout_constraintBottom_toTopOf="@+id/stopButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreTitle"
+        app:layout_constraintTop_toBottomOf="@+id/themeTitle"
         app:layout_constraintVertical_bias="0.26999998" />
 
     <RadioGroup
@@ -59,24 +61,6 @@
         app:layout_constraintBottom_toTopOf="@+id/stopButton"
         app:layout_constraintStart_toStartOf="@+id/questionView"
         app:layout_constraintTop_toBottomOf="@+id/questionView">
-
-        <RadioButton
-            android:id="@+id/answer1"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/example_answer1" />
-
-        <RadioButton
-            android:id="@+id/answer2"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/example_answer2" />
-
-        <RadioButton
-            android:id="@+id/answer3"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/example_answer3" />
     </RadioGroup>
 
     <Button
@@ -88,6 +72,7 @@
         android:layout_marginBottom="16dp"
         android:text="@string/stop"
         android:textAllCaps="true"
+        android:onClick="onStopButtonClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/validateButton"
         app:layout_constraintHorizontal_bias="0.5"
@@ -102,6 +87,7 @@
         android:layout_marginBottom="16dp"
         android:text="@string/validate"
         android:textAllCaps="true"
+        android:onClick="onValideButtonClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

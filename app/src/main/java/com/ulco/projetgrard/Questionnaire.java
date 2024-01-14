@@ -18,6 +18,14 @@ class Questionnaire implements Serializable {
         questions.add(question);
     }
 
+    Integer getNbQuestions() {
+        return questions.size();
+    }
+
+    Question getQuestion(Integer index) {
+        return questions.get(index);
+    }
+
     @NonNull
     @Override
     public String toString() {

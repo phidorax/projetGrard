@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String QUIZ = "com.ulco.projetgrard.QUIZ";
+    public static final String RESULT = "com.ulco.projetgrard.RESULT";
     private List<Questionnaire> quiz;
 
     @Override
@@ -55,6 +57,17 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<Questionnaire> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, quiz);
         // On l'associe à la ListView
         quizListView.setAdapter(adapter);
+        // Ajout d'un listener sur la ListView
+        quizListView.setOnItemClickListener((parent, view, position, id) -> {
+            // On récupère le quiz sélectionné
+            Questionnaire questionnaire = quiz.get(position);
+            // On crée l'activité AnswerActivity
+            Intent intent = new Intent(this, AnswerActivity.class);
+            // On passe le quiz à l'activité
+            intent.putExtra(QUIZ, questionnaire);
+            // On lance l'activité
+            startActivity(intent);
+        });
     }
 
     public void onSeeScoresButtonClick(View view) {

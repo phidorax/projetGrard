@@ -16,12 +16,11 @@
     <string name="password_incorrect">Mot de passe incorrect</string>
     <string name="title_password_admin">Mot de passe admin</string>
     <string name="msg_password_admin">Veuillez entrer le mot de passe admin</string>
+    <string name="error_load_quiz">Erreur lors de la récupération du questionnaire</string>
+    <string name="progress_text">Question %1$d/%2$d</string>
+    <string name="error_no_answer">Vous n\'avez pas sélectionné de réponse</string>
     <!--  Chaînes servant uniquement à afficher un aperçu dans l'éditeur de layout  -->
-    <string name="example_progress_text">Question 1/10</string>
-    <string name="example_category_text">Préhistoire</string>
-    <string name="example_question_text">Les dinosaures ont disparu il y a…</string>
-    <string name="example_answer1">20 millions d\'années</string>
-    <string name="example_answer2">65 millions d\'années</string>
-    <string name="example_answer3">105 millions d\'années</string>
+    <string name="example_category_text">Catégorie du questionnaire</string>
+    <string name="example_question_text">Question posée au joueur</string>
     <string name="example_average_note">12/20</string>
 </resources>

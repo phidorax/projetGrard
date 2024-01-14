@@ -7,19 +7,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Question implements Serializable {
-    String question;
-    List<String> answers = new ArrayList<>();
-    Integer correctAnswer;
+    private final String question;
+    private final List<String> answers;
+    private Integer correctAnswer;
 
     Question(String question) {
         this.question = question;
+        this.answers = new ArrayList<>();
     }
 
-    void addAnswer(String answer, boolean isCorrect) {
+    public void addAnswer(String answer, Boolean isCorrect) {
         answers.add(answer);
         if (isCorrect) {
             correctAnswer = answers.size() - 1;
         }
+    }
+
+    public Boolean isCorrect(Integer answer) {
+        return answer.equals(correctAnswer);
+    }
+
+    public Integer getNbAnswers() {
+        return answers.size();
+    }
+
+    public String getAnswer(Integer index) {
+        return answers.get(index);
+    }
+
+    public String getQuestion() {
+        return question;
     }
 
     @NonNull
