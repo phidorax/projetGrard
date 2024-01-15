@@ -2,15 +2,12 @@ package com.ulco.projetgrard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AnswerActivity extends AppCompatActivity {
@@ -21,9 +18,19 @@ public class AnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
-
         if (savedInstanceState != null) {
             playQuestionnaire = (PlayQuestionnaire) savedInstanceState.getSerializable(STATE);
+            if (playQuestionnaire != null) {
+                // Affichage du thème
+                displayTheme();
+                // Affichage de la question
+                displayQuestion(playQuestionnaire.getCurrentQuestion());
+            } else {
+                // On affiche un message d'erreur
+                Toast.makeText(this, R.string.error_load_quiz, Toast.LENGTH_LONG).show();
+                // On retourne à l'activité précédente
+                finish();
+            }
         } else {
             // Récupération de l'intent
             Intent intent = getIntent();
@@ -46,22 +53,9 @@ public class AnswerActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(STATE, playQuestionnaire);
-    }
-
-    @Override
-    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState);
-        assert savedInstanceState != null;
-        playQuestionnaire = (PlayQuestionnaire) savedInstanceState.getSerializable(STATE);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        playQuestionnaire = (PlayQuestionnaire) savedInstanceState.getSerializable(STATE);
+        super.onSaveInstanceState(outState);
     }
 
     private void displayTheme() {

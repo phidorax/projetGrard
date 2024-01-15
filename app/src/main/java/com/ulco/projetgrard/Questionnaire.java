@@ -29,6 +29,7 @@ class Questionnaire implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return category;
+        return "Questionnaire: " + category + " " +
+                "Questions: " + questions;
     }
 }

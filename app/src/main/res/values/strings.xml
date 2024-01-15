@@ -19,6 +19,7 @@
     <string name="error_load_quiz">Erreur lors de la récupération du questionnaire</string>
     <string name="progress_text">Question %1$d/%2$d</string>
     <string name="error_no_answer">Vous n\'avez pas sélectionné de réponse</string>
+    <string name="quiz_already_played">Ce quiz à déjà été joué.</string>
     <!--  Chaînes servant uniquement à afficher un aperçu dans l'éditeur de layout  -->
     <string name="example_category_text">Catégorie du questionnaire</string>
     <string name="example_question_text">Question posée au joueur</string>

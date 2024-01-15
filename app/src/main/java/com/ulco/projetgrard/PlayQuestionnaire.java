@@ -37,6 +37,10 @@ public class PlayQuestionnaire implements Serializable {
         return questionnaire.getNbQuestions();
     }
 
+    public Question getCurrentQuestion() {
+        return questionnaire.getQuestion(currentQuestion);
+    }
+
     public Question getNextQuestion() {
         // Si on a joué toutes les questions, on retourne null
         if (played.stream().allMatch(Boolean::booleanValue)) {
