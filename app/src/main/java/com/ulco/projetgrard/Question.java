@@ -17,6 +17,9 @@ class Question implements Serializable {
     }
 
     public void addAnswer(String answer, Boolean isCorrect) {
+        if (answer.isEmpty()) {
+            return;
+        }
         answers.add(answer);
         if (isCorrect) {
             correctAnswer = answers.size() - 1;

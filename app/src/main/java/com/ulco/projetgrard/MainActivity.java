@@ -1,21 +1,28 @@
 package com.ulco.projetgrard;
 
+import static android.os.Environment.DIRECTORY_DOCUMENTS;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String QUIZ = "com.ulco.projetgrard.QUIZ";
     public static final String RESULT = "com.ulco.projetgrard.RESULT";
     private static final String LIST_QUIZ = "com.ulco.projetgrard.LIST_QUIZ";
-    private static final String SCORES = "com.ulco.projetgrard.SCORES";
+    public static final String SCORES = "com.ulco.projetgrard.SCORES";
+    public static final String MOYENNE = "com.ulco.projetgrard.MOYENNE";
     private ListQuestionnaire listQuestionnaire;
     private final ActivityResultLauncher<Intent> answerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -45,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                             String category = quizResult.getCategory();
                             // On met à jour le score
                             listQuestionnaire.putScore(category, score);
+                            // On met à jour la ListView
+                            displayAvailableQuiz();
                         }
                     }
                 }
@@ -103,7 +113,14 @@ public class MainActivity extends AppCompatActivity {
         // On récupère la ListView
         ListView quizListView = findViewById(R.id.availableQuizListView);
         // On crée l'adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listQuestionnaire.getStringQuiz());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        // On ajoute les quiz à l'adapter
+        listQuestionnaire.getStringQuiz().forEach((quiz) -> {
+            if (listQuestionnaire.isAlreadyPlayed(listQuestionnaire.getStringQuiz().indexOf(quiz))) {
+                quiz += " (déjà joué)";
+            }
+            adapter.add(quiz);
+        });
         // On l'associe à la ListView
         quizListView.setAdapter(adapter);
         // Ajout d'un listener sur la ListView
@@ -128,11 +145,29 @@ public class MainActivity extends AppCompatActivity {
     public void onSeeScoresButtonClick(View view) {
         // On crée l'activité ScoreActivity
         Intent intent = new Intent(this, ScoreActivity.class);
+        // On passe les scores à l'activité
+        intent.putExtra(SCORES, listQuestionnaire.getListScores());
+        // On passe la moyenne à l'activité
+        intent.putExtra(MOYENNE, listQuestionnaire.getMoyenne());
         // On lance l'activité
         startActivity(intent);
     }
 
     public void onResetScoresButtonClick(View view) {
+        // On reset les scores
+        listQuestionnaire.resetScores();
+        // On récupère les données persistantes
+        SharedPreferences shared = getSharedPreferences(SCORES, MODE_PRIVATE);
+        // On récupère l'éditeur
+        SharedPreferences.Editor editor = shared.edit();
+        // On supprime les scores
+        editor.clear();
+        // On applique les modifications
+        editor.apply();
+        // On met à jour la ListView
+        displayAvailableQuiz();
+        // On affiche un message
+        Toast.makeText(this, R.string.scores_reset, Toast.LENGTH_SHORT).show();
     }
 
     public void onCreateQuizButtonClick(View view) {

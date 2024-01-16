@@ -28,6 +28,9 @@ public class QuizDecoder {
                     quiz.addQuestion(currentQuestion);
                 }
             }
+            // On ferme le reader
+            reader.close();
+            // On retourne le quiz
             return quiz;
         } catch (IOException e) {
             e.printStackTrace();

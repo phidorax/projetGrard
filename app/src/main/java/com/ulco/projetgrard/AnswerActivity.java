@@ -85,6 +85,9 @@ public class AnswerActivity extends AppCompatActivity {
             button = new RadioButton(this);
             button.setText(question.getAnswer(i));
             button.setId(i);
+            // Définir la hauteur du bouton à 48 dp
+            button.setHeight(48);
+            // Ajout du RadioButton au RadioGroup
             radioGroup.addView(button);
         }
     }
