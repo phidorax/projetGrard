@@ -2,6 +2,8 @@ package com.ulco.projetgrard;
 
 import androidx.annotation.NonNull;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,18 @@ class Questionnaire implements Serializable {
 
     Question getQuestion(Integer index) {
         return questions.get(index);
+    }
+
+    public void writeInFile(BufferedWriter writer) {
+        try {
+            writer.write(category);
+            writer.newLine();
+            for (Question question : questions) {
+                question.writeInFile(writer);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @NonNull

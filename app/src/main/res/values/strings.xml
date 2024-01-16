@@ -21,6 +21,15 @@
     <string name="error_no_answer">Vous n\'avez pas sélectionné de réponse</string>
     <string name="quiz_already_played">Ce quiz à déjà été joué.</string>
     <string name="scores_reset">Réinitialisation des scores</string>
+    <string name="error_create_directory">Impossible de créer le dossier qui contient les questionnaires</string>
+    <string name="error_create_file">Impossible de créer un fichier pour un questionnaire</string>
+    <string name="add_answer">Ajouter une réponse</string>
+    <string name="add_question">Ajouter une question</string>
+    <string name="add_quiz">Ajouter un questionnaire</string>
+    <string name="question">Question</string>
+    <string name="category">Catégorie</string>
+    <string name="answer">Réponse</string>
+    <string name="good_answer">Bonne réponse</string>
     <!--  Chaînes servant uniquement à afficher un aperçu dans l'éditeur de layout  -->
     <string name="example_category_text">Catégorie du questionnaire</string>
     <string name="example_question_text">Question posée au joueur</string>

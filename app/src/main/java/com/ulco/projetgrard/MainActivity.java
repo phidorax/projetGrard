@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
@@ -14,18 +13,24 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String QUIZ = "com.ulco.projetgrard.QUIZ";
@@ -89,24 +94,80 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ArrayList<Questionnaire> getQuiz() {
-        // On récupère les questions du quiz
         ArrayList<Questionnaire> quiz = new ArrayList<>();
-        try (InputStream fis1 = getAssets().open("qcm01.txt")) {
-            quiz.add(QuizDecoder.decodeQuiz(fis1));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        // Récupère le dossier public DIRECTORY_DOCUMENTS
+        File directory = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "projetGrard");
+        // Crée une liste pour stocker les fichiers
+
+        // Vérifie si le dossier existe
+        if (!directory.exists()) {
+            // Si le dossier n'existe pas, on le crée
+            boolean directoryOk = directory.mkdir();
+            if (!directoryOk) {
+                // Si le dossier n'a pas pu être créé, on affiche un message d'erreur
+                Toast.makeText(this, R.string.error_create_directory, Toast.LENGTH_LONG).show();
+                // On quitte l'application
+                finish();
+            }
         }
-        try (InputStream fis2 = getAssets().open("qcm02.txt")) {
-            quiz.add(QuizDecoder.decodeQuiz(fis2));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+        // Parcours tous les fichiers du dossier donc l'application a accès
+        // Ajoute le fichier à la liste
+        File[] listFiles = directory.listFiles();
+        List<File> files = listFiles != null ? new ArrayList<>(Arrays.asList(listFiles)) : new ArrayList<>();
+
+        // Si aucun fichier n'a été trouvé dans le dossier, on ajout les fichiers par défaut
+        if (files.size() == 0) {
+            addAssetsFiles(directory);
         }
-        try (InputStream fis3 = getAssets().open("qcm03.txt")) {
-            quiz.add(QuizDecoder.decodeQuiz(fis3));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+        // Lit chaque fichier
+        for (File file : files) {
+            // Lit le contenu du fichier
+            try {
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    quiz.add(QuizDecoder.decodeQuiz(fis));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return quiz;
+    }
+
+    private void addAssetsFiles(File directory) {
+        // On ajoute les fichiers par défaut qui sont dans les ressources
+        List<String> assetsFiles = new ArrayList<>(Arrays.asList("qcm01", "qcm02", "qcm03"));
+        assetsFiles.forEach((assetFile) -> {
+            // On copie le fichier dans le dossier
+            try {
+                InputStream inputStream = getAssets().open(assetFile + ".txt");
+                File file = new File(directory, assetFile + ".txt");
+                boolean newFile = file.createNewFile();
+                if (!newFile) {
+                    // Si le fichier n'a pas pu être créé, on affiche un message d'erreur
+                    Toast.makeText(this, R.string.error_create_file, Toast.LENGTH_LONG).show();
+                    // On quitte l'application
+                    finish();
+                }
+                // On copie le fichier
+                FileOutputStream fos = new FileOutputStream(file);
+                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                BufferedWriter bw = new BufferedWriter(osw);
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        bw.write(line);
+                        bw.newLine();
+                    }
+                }
+                inputStream.close();
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+        });
     }
 
     private void displayAvailableQuiz() {
