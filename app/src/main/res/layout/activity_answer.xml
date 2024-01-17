@@ -87,7 +87,7 @@
         android:layout_marginBottom="16dp"
         android:text="@string/validate"
         android:textAllCaps="true"
-        android:onClick="onValideButtonClick"
+        android:onClick="onValidButtonClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

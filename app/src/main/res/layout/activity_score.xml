@@ -87,7 +87,7 @@
                 android:id="@+id/averageScore"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="0/20" />
+                android:text="@string/example_average_note" />
         </TableRow>
     </TableLayout>
 

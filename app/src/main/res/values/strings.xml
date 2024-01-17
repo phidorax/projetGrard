@@ -29,9 +29,14 @@
     <string name="question">Question</string>
     <string name="category">Catégorie</string>
     <string name="answer">Réponse</string>
+    <string name="toast_answer">" réponse(s)"</string>
     <string name="good_answer">Bonne réponse</string>
+    <string name="toast_empty_answer">La réponse saisie est vide</string>
+    <string name="toast_empty_question">La question saisie est vide</string>
+    <string name="toast_empty_category">La catégorie saisie est vide</string>
     <!--  Chaînes servant uniquement à afficher un aperçu dans l'éditeur de layout  -->
     <string name="example_category_text">Catégorie du questionnaire</string>
     <string name="example_question_text">Question posée au joueur</string>
-    <string name="example_average_note">12/20</string>
+    <string name="example_average_note">0/20</string>
+    <string name="toast_empty_quiz">Il y a aucune question saisie</string>
 </resources>

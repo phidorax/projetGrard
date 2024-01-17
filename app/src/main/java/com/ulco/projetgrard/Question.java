@@ -45,6 +45,7 @@ class Question implements Serializable {
 
     public void writeInFile(BufferedWriter writer) {
         try {
+            writer.newLine();
             writer.write(question);
             writer.newLine();
             for (int i = 0; i < answers.size(); i++) {
@@ -54,7 +55,6 @@ class Question implements Serializable {
                 }
                 writer.newLine();
             }
-            writer.newLine();
         } catch (Exception e) {
             e.printStackTrace();
         }

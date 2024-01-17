@@ -35,6 +35,7 @@ class Questionnaire implements Serializable {
             for (Question question : questions) {
                 question.writeInFile(writer);
             }
+            writer.newLine();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

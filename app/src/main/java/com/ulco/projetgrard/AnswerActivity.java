@@ -103,7 +103,7 @@ public class AnswerActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onValideButtonClick(View view) {
+    public void onValidButtonClick(View view) {
         // Récupération du RadioGroup
         RadioGroup radioGroup = findViewById(R.id.answersGroup);
         // Récupération de l'index du RadioButton sélectionné

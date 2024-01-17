@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
+        android:theme="@style/AppTheme.TopBar"
         app:layout_collapseMode="pin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:title="@string/app_title"
-        app:titleTextColor="@android:color/white" />
+        app:title="@string/app_name" />
 
     <TextView
         android:id="@+id/selectQuizTitle"
@@ -37,66 +37,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:choiceMode="singleChoice"
-        app:layout_constraintBottom_toTopOf="@+id/seeScoresButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectQuizTitle">
-    </ListView>
-
-    <Button
-        android:id="@+id/seeScoresButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="onSeeScoresButtonClick"
-        android:text="@string/see_scores_title"
-        app:layout_constraintBottom_toTopOf="@+id/createQuizButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/resetScoresButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/resetScoresButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:onClick="onResetScoresButtonClick"
-        android:text="@string/reset_scores_title"
-        app:layout_constraintBottom_toBottomOf="@+id/seeScoresButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/seeScoresButton"
-        app:layout_constraintTop_toTopOf="@+id/seeScoresButton" />
-
-    <Button
-        android:id="@+id/createQuizButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="onCreateQuizButtonClick"
-        android:text="@string/create_quiz_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/quitAppButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/quitAppButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:onClick="onQuitAppButtonClick"
-        android:text="@string/quit_app_title"
-        app:layout_constraintBottom_toBottomOf="@+id/createQuizButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/createQuizButton"
-        app:layout_constraintTop_toTopOf="@+id/createQuizButton" />
+        app:layout_constraintTop_toBottomOf="@+id/selectQuizTitle"></ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

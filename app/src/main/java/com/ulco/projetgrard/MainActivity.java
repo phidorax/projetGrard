@@ -9,7 +9,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -17,7 +19,10 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,33 +72,125 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+    private final ActivityResultLauncher<Intent> createQuizLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent mess = result.getData();
+                    if (mess != null) {
+                        Bundle extras = mess.getExtras();
+                        Questionnaire quiz = null;
+                        if (extras != null) {
+                            // On récupère le quiz
+                            quiz = (Questionnaire) extras.getSerializable(QUIZ);
+                        }
+                        if (quiz != null) {
+                            // On écrit le quiz dans un fichier dans le dossier public DIRECTORY_DOCUMENTS avec pour nom qcm-yyMMddHHmm.txt
+                            File directory = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOCUMENTS), "projetGrard");
+                            // On récupère la date de création du quiz
+                            String creationDate;
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                creationDate = "qcm-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmm"));
+                            } else {
+                                creationDate = "qcm-" + quiz.category;
+                            }
+                            // On crée le fichier
+                            File file = new File(directory, creationDate + ".txt");
+                            try {
+                                boolean newFile = file.createNewFile();
+                                if (!newFile) {
+                                    // Si le fichier n'a pas pu être créé, on affiche un message d'erreur
+                                    Toast.makeText(this, R.string.error_create_file, Toast.LENGTH_LONG).show();
+                                    // On quitte l'application
+                                    finish();
+                                }
+                                // On copie le fichier
+                                FileOutputStream fos = new FileOutputStream(file);
+                                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                                BufferedWriter bw = new BufferedWriter(osw);
+                                quiz.writeInFile(bw);
+                                bw.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            // On ajoute le quiz à la liste
+                            listQuestionnaire.addQuiz(quiz);
+                            // On met à jour la ListView
+                            displayAvailableQuiz();
+                        }
+                    }
+                }
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MaterialToolbar toolbar = findViewById(R.id.materialToolbar);
+        setSupportActionBar(toolbar);
+
+        // On récupère les données dans l'état de l'activité
         if (savedInstanceState != null) {
             listQuestionnaire = (ListQuestionnaire) savedInstanceState.getSerializable(LIST_QUIZ);
         }
         if (listQuestionnaire == null) {
             listQuestionnaire = new ListQuestionnaire(getQuiz());
-        }
-        // On récupère les données persistantes
-        SharedPreferences shared = getSharedPreferences(SCORES, MODE_PRIVATE);
-        // On récupère les scores
-        for (String category : listQuestionnaire.getStringQuiz()) {
-            if (shared.contains(category)) {
-                listQuestionnaire.putScore(category, shared.getInt(category, 0));
+            // On récupère les données persistantes
+            SharedPreferences shared = getSharedPreferences(SCORES, MODE_PRIVATE);
+            // On récupère les scores
+            for (String category : listQuestionnaire.getStringQuiz()) {
+                if (shared.contains(category)) {
+                    listQuestionnaire.putScore(category, shared.getInt(category, 0));
+                }
             }
         }
         displayAvailableQuiz();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(LIST_QUIZ, listQuestionnaire);
-        super.onSaveInstanceState(outState);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(LIST_QUIZ, listQuestionnaire);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.see_scores) {
+            onSeeScoresButtonClick();
+            return true;
+        } else if (id == R.id.reset_scores) {
+            onResetScoresButtonClick();
+            return true;
+        } else if (id == R.id.create_quiz) {
+            onCreateQuizButtonClick();
+            return true;
+        } else if (id == R.id.quit_app) {
+            onQuitAppButtonClick(true);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //onClose
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // On lance la sauvegarde des scores
+        onQuitAppButtonClick(false);
+    }
 
     private ArrayList<Questionnaire> getQuiz() {
         ArrayList<Questionnaire> quiz = new ArrayList<>();
@@ -203,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void onSeeScoresButtonClick(View view) {
+    public void onSeeScoresButtonClick() {
         // On crée l'activité ScoreActivity
         Intent intent = new Intent(this, ScoreActivity.class);
         // On passe les scores à l'activité
@@ -214,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onResetScoresButtonClick(View view) {
+    public void onResetScoresButtonClick() {
         // On reset les scores
         listQuestionnaire.resetScores();
         // On récupère les données persistantes
@@ -231,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.scores_reset, Toast.LENGTH_SHORT).show();
     }
 
-    public void onCreateQuizButtonClick(View view) {
+    public void onCreateQuizButtonClick() {
         // On demande le mot de passe admin avec alert dialog
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(R.string.title_password_admin);
@@ -250,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
                 // On crée l'activité CreateQuizActivity
                 Intent intent = new Intent(this, CreateQuizActivity.class);
                 // On lance l'activité
-                startActivity(intent);
+                createQuizLauncher.launch(intent);
             } else {
                 // Sinon on affiche un message d'erreur
                 Toast.makeText(this, R.string.password_incorrect, Toast.LENGTH_SHORT).show();
@@ -266,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
         return password.equals("MDP");
     }
 
-    public void onQuitAppButtonClick(View view) {
+    public void onQuitAppButtonClick(boolean closeApp) {
         // On sauvegarde les scores dans les données persistantes
         // On récupère les données persistantes
         SharedPreferences shared = getSharedPreferences(SCORES, MODE_PRIVATE);
@@ -276,7 +375,9 @@ public class MainActivity extends AppCompatActivity {
         listQuestionnaire.getScores().keySet().forEach(category -> editor.putInt(category, listQuestionnaire.getScore(category)));
         // On applique les modifications
         editor.apply();
-        // On quitte l'application
-        finish();
+        // On quitte l'application si closeApp est vrai
+        if (closeApp) {
+            finish();
+        }
     }
 }

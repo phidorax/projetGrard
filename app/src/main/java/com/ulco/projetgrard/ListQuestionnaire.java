@@ -12,12 +12,6 @@ public class ListQuestionnaire implements Serializable {
     private final Map<String, Integer> scores;
     private Double moyenne;
 
-    public ListQuestionnaire() {
-        this.quiz = new ArrayList<>();
-        this.scores = new HashMap<>();
-        this.moyenne = 0.;
-    }
-
     public ListQuestionnaire(List<Questionnaire> quiz) {
         this.quiz = quiz;
         this.scores = new HashMap<>();
@@ -26,6 +20,9 @@ public class ListQuestionnaire implements Serializable {
 
     public Questionnaire getQuiz(int index) {
         return quiz.get(index);
+    }
+    public void addQuiz(Questionnaire questionnaire) {
+        quiz.add(questionnaire);
     }
 
     public Boolean isAlreadyPlayed(Integer index) {
