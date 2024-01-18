@@ -116,7 +116,9 @@ public class CreateQuizActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.toast_empty_category, Toast.LENGTH_LONG).show();
             return;
         }
+        // On crée le questionnaire
         Questionnaire questionnaire = new Questionnaire(categoryText);
+        // On vérifie si il y a des questions
         if (questions.isEmpty()) {
             Toast.makeText(this, R.string.toast_empty_quiz, Toast.LENGTH_LONG).show();
             return;

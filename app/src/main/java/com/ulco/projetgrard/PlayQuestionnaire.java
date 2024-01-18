@@ -60,18 +60,24 @@ public class PlayQuestionnaire implements Serializable {
     }
 
     public void answerQuestion(Integer answer) {
+        // Si on n'a pas de question à répondre, on lève une exception
         if (currentQuestion == null) {
             throw new IllegalStateException("No question to answer");
         }
+        // Si la réponse est correcte, on incrémente le score
         if (questionnaire.getQuestion(currentQuestion).isCorrect(answer)) {
             score++;
         }
+        // On retient que la question a été jouée
         played.set(currentQuestion, true);
+        // On vide la question courante
         currentQuestion = null;
     }
 
     public void cancelPlay() {
+        // On vide la question courante
         currentQuestion = null;
+        // On met le score à 0
         score = 0;
     }
 }

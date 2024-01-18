@@ -29,6 +29,7 @@ class Questionnaire implements Serializable {
     }
 
     public void writeInFile(BufferedWriter writer) {
+        // On écrit la catégorie et les questions dans le fichier
         try {
             writer.write(category);
             writer.newLine();

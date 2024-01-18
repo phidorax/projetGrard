@@ -3,7 +3,6 @@ package com.ulco.projetgrard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -92,6 +91,7 @@ public class ScoreActivity extends AppCompatActivity {
         if (scoreList == null) {
             scoreList = new ArrayList<>();
         }
+        // On crée la map des scores à partir de la liste
         scores = new HashMap<>(scoreList.size());
         for (String score : scoreList) {
             String[] split = score.split(" : ");
@@ -101,6 +101,7 @@ public class ScoreActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        // On sauvegarde le score et la moyenne
         outState.putStringArray(MainActivity.SCORES, scoreList.toArray(new String[0]));
         outState.putDouble(MainActivity.MOYENNE, moyenne);
         super.onSaveInstanceState(outState);

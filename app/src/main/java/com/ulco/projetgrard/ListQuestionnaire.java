@@ -30,16 +30,23 @@ public class ListQuestionnaire implements Serializable {
     }
 
     public List<String> getStringQuiz() {
+        // On récupère la liste des catégories et on la renvoie sous forme de liste de String
         List<String> stringQuiz = new ArrayList<>();
         quiz.forEach(questionnaire -> stringQuiz.add(questionnaire.category));
         return stringQuiz;
     }
 
     public Integer getScore(String category) {
+        // Si la catégorie n'a pas de score, on renvoie 0
+        if (!scores.containsKey(category)) {
+            return 0;
+        }
+        // Sinon on renvoie le score
         return scores.get(category);
     }
 
     public Map<String, Integer> getScores() {
+        // On renvoie la liste des scores
         return scores;
     }
 
@@ -54,11 +61,14 @@ public class ListQuestionnaire implements Serializable {
             // On ajoute le score à la liste
             listScores.add(titleQuiz + " : " + score + "/" + questionnaire.questions.size());
         }
+        // On renvoie la liste des scores sous forme de tableau de String
         return listScores.toArray(new String[0]);
     }
 
     public void putScore(String category, Integer score) {
+        // On ajoute le score à la catégorie
         scores.put(category, score);
+        // On recalcule la moyenne
         calculMoyenne();
     }
 
@@ -72,6 +82,7 @@ public class ListQuestionnaire implements Serializable {
     }
 
     private void calculMoyenne() {
+        // Si il n'y a pas de score, la moyenne est de 0
         if (scores.isEmpty()) {
             moyenne = 0.;
             return;
@@ -86,15 +97,19 @@ public class ListQuestionnaire implements Serializable {
                 }
             }
         }
+        // Si il n'y a pas de score, la moyenne est de 0
         if (total == 0.) {
             moyenne = 0.;
             return;
         }
+        // Calcul de la moyenne
         moyenne = total / scores.size();
     }
 
     public void resetScores() {
+        // On vide la liste des scores
         scores.clear();
+        // On remet la moyenne à 0
         moyenne = 0.;
     }
 }

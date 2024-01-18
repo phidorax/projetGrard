@@ -44,6 +44,7 @@ class Question implements Serializable {
     }
 
     public void writeInFile(BufferedWriter writer) {
+        // On écrit la question et les réponses dans le fichier
         try {
             writer.newLine();
             writer.write(question);

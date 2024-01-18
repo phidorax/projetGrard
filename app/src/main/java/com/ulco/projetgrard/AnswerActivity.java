@@ -18,6 +18,7 @@ public class AnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
+        // Si on a déjà un état sauvegardé, on le récupère
         if (savedInstanceState != null) {
             playQuestionnaire = (PlayQuestionnaire) savedInstanceState.getSerializable(STATE);
             if (playQuestionnaire != null) {
@@ -54,6 +55,7 @@ public class AnswerActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        // On sauvegarde le questionnaire en cours
         outState.putSerializable(STATE, playQuestionnaire);
         super.onSaveInstanceState(outState);
     }

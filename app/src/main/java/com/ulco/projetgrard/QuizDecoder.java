@@ -12,6 +12,7 @@ public class QuizDecoder {
             Questionnaire quiz = new Questionnaire(reader.readLine());
             String line;
             Question currentQuestion = null;
+            // On lit le fichier ligne par ligne et on crée les questions et réponses
             while ((line = reader.readLine()) != null) {
                 if (line.isEmpty()) {
                     continue;

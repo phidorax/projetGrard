@@ -340,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         alertDialog.setView(input);
 
+        // On gére les boutons de l'alert dialog
         alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
             // On récupère le mot de passe entré
             String password = input.getText().toString();
@@ -356,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         alertDialog.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
-
+        // On affiche l'alert dialog
         alertDialog.show();
     }
 
