@@ -24,7 +24,7 @@ public class CreateQuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_quiz);
 
         // On récupère la ListView
-        ListView listView = (ListView) findViewById(R.id.answersList);
+        ListView listView = findViewById(R.id.answersList);
         // On crée l'adapter
         answersAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         // On attache l'adapter à la ListView
@@ -33,7 +33,7 @@ public class CreateQuizActivity extends AppCompatActivity {
 
     public void onClickAddAnswerButton(View view) {
         // On récupère la réponse
-        TextView answer = (TextView) findViewById(R.id.answerEditText);
+        TextView answer = findViewById(R.id.answerEditText);
         String answerText = answer.getText().toString();
         if (answerText.isEmpty()) {
             Toast.makeText(this, R.string.toast_empty_answer, Toast.LENGTH_LONG).show();
@@ -44,7 +44,7 @@ public class CreateQuizActivity extends AppCompatActivity {
             currentQuestion = new Question(answerText);
         }
         // On récupère le bouton radio
-        Switch answerSwitch = (Switch) findViewById(R.id.answerSwitch);
+        Switch answerSwitch = findViewById(R.id.answerSwitch);
         // On vérifie si la réponse est la bonne réponse et on l'ajoute à la question
         currentQuestion.addAnswer(answerText, answerSwitch.isChecked());
         // On l'ajoute à l'adapter
@@ -57,7 +57,7 @@ public class CreateQuizActivity extends AppCompatActivity {
 
     public void onClickAddQuestionButton(View view) {
         // On récupère la question
-        TextView questionView = (TextView) findViewById(R.id.questionEditText);
+        TextView questionView = findViewById(R.id.questionEditText);
         String questionText = questionView.getText().toString();
         if (questionText.isEmpty()) {
             Toast.makeText(this, R.string.toast_empty_question, Toast.LENGTH_LONG).show();
@@ -65,11 +65,27 @@ public class CreateQuizActivity extends AppCompatActivity {
         }
         // On crée la question
         Question question = new Question(questionText);
+        // On vérifie si il y a des réponses
+        if (answersAdapter.isEmpty()) {
+            Toast.makeText(this, R.string.toast_empty_answer, Toast.LENGTH_LONG).show();
+            return;
+        }
+        boolean hasCorrectAnswer = false;
         // On ajoute les réponses à la question
         if (currentQuestion != null) {
             for (int i = 0; i < currentQuestion.getNbAnswers(); i++) {
-                question.addAnswer(currentQuestion.getAnswer(i), currentQuestion.isCorrect(i));
+                String answer = currentQuestion.getAnswer(i);
+                boolean isCorrect = currentQuestion.isCorrect(i);
+                if (isCorrect) {
+                    hasCorrectAnswer = true;
+                }
+                question.addAnswer(answer, isCorrect);
             }
+        }
+        // On vérifie si la question a une bonne réponse
+        if (!hasCorrectAnswer) {
+            Toast.makeText(this, R.string.toast_no_correct_answer, Toast.LENGTH_LONG).show();
+            return;
         }
         // On ajoute la question à la liste
         questions.add(question);
@@ -80,11 +96,11 @@ public class CreateQuizActivity extends AppCompatActivity {
         // On vide l'adapter
         displayCurrentAnswers();
         // On récupère la réponse
-        TextView answer = (TextView) findViewById(R.id.answerEditText);
+        TextView answer = findViewById(R.id.answerEditText);
         // On vide le champ de réponse
         answer.setText("");
         // On récupère le switch
-        Switch answerSwitch = (Switch) findViewById(R.id.answerSwitch);
+        Switch answerSwitch = findViewById(R.id.answerSwitch);
         // On remet le switch à false
         answerSwitch.setChecked(false);
         // On affiche la question dans un Toast
@@ -94,7 +110,7 @@ public class CreateQuizActivity extends AppCompatActivity {
 
     public void onClickAddQuizButton(View view) {
         // On récupère la catégorie du quiz
-        TextView category = (TextView) findViewById(R.id.categoryEditText);
+        TextView category = findViewById(R.id.categoryEditText);
         String categoryText = category.getText().toString();
         if (categoryText.isEmpty()) {
             Toast.makeText(this, R.string.toast_empty_category, Toast.LENGTH_LONG).show();
